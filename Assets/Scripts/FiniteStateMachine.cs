@@ -34,7 +34,7 @@ public class FiniteStateMachine<T> // <T> Generic
         return CurrentState;
     }
 
-    public void LoadStates()                            //[Function]// Load All states into StateList
+    private void LoadStates()                           //[Function]// Load All states into StateList
     {
         var values = Enum.GetValues(typeof(T)); // Values equals each value in <T>
 
@@ -89,14 +89,13 @@ public class FiniteStateMachine<T> // <T> Generic
 
 // Implementation ////////////////
 /*
-    Example:
-    FiniteStateMachine<State> _fsm = new FiniteStateMachine<GameStates>()                   // Default Constructor
-                                    - or -
-    FiniteStateMachine<State> _fsm = new FiniteStateMachine<GameStates>(State.INIT)         // Custom Constructor // Sets CurrentState to GameState.INIT
+    // Example: //
+    FiniteStateMachine<State> _fsm = new FiniteStateMachine<State>()                   // Default Constructor
+                                    //- or -//
+    FiniteStateMachine<State> _fsm = new FiniteStateMachine<State>(State.INIT)         // Custom Constructor // Sets CurrentState to GameState.INIT
 
     _fsm.Transition(State.INIT, State.RUNNING);                                             // Sets a valid Transition between INIT to RUNNING
-
-    _fsm.LoadStates();                                                                      // Loads all States into the 
-
+    ...
+    
 */
-/////////////////////////////////
+//////////////////////////////////
