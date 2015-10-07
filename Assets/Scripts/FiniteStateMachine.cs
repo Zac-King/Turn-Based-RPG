@@ -34,12 +34,20 @@ public class FiniteStateMachine<T> // <T> Generic
         return CurrentState;
     }
 
+    public void AddState(T t)                           //[Function]// Add a Generic to StateList
+    {
+        StateList.Add(t);
+    }
+
     private void LoadStates()                           //[Function]// Load All states into StateList
     {
-        var values = Enum.GetValues(typeof(T)); // Values equals each value in <T>
+        if (typeof(T) == typeof(Enum))
+        {
+            var values = Enum.GetValues(typeof(T)); // Values equals each value in <T>
 
-        foreach (var v in values)               // For each "State" that was stored in v
-            StateList.Add((T)v);                // We add it to our StateList. Once we've Typecasted it
+            foreach (var v in values)               // For each "State" that was stored in v
+                StateList.Add((T)v);                // We add it to our StateList. Once we've Typecasted it
+        }
     }
 
     public void AddTransition(T from, T to)             //[Function]// Add valid Transistions to TransitionList
@@ -94,7 +102,7 @@ public class FiniteStateMachine<T> // <T> Generic
                                     //- or -//
     FiniteStateMachine<State> _fsm = new FiniteStateMachine<State>(State.INIT)         // Custom Constructor // Sets CurrentState to GameState.INIT
 
-    _fsm.Transition(State.INIT, State.RUNNING);                                             // Sets a valid Transition between INIT to RUNNING
+    _fsm.Transition(State.INIT, State.RUNNING);                                        // Sets a valid Transition between INIT to RUNNING
     ...
     
 */
