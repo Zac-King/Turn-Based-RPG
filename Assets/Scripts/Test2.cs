@@ -5,11 +5,17 @@ using System.Collections.Generic;
 
 public class Test2 : MonoBehaviour, ISubscriber
 {
+    
+    
+    
+
     [SerializeField]
     private EventSystem _systemHub;
 
     void Start()
     {
+        Callback tester;
+        tester = Test2Act;
         Subscribe(gameObject.name, "TestMessage");
         Subscribe("BadGuy", "Punch");
     }

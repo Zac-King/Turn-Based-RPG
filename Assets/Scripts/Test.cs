@@ -84,6 +84,8 @@ using System;
 
 public class Test : MonoBehaviour, ISubscriber
 {
+    
+
     [SerializeField]
     private EventSystem _systemHub;
 

@@ -2,32 +2,35 @@
 using System.Collections;
 using System.Collections.Generic;
 
-static class ObserverSystem
-{ 
+public static class ObserverSystem
+{
     static Dictionary<string, Callback> _subscribers = new Dictionary<string, Callback>();
 
-
-    static void Notify(string message)                      // [Function] // Notify all subscribers of the message
+    public static void Notify(string message)                      // [Function] // Notify all subscribers of the message
     {
         _subscribers[message]();    // Performs all the messages stored in the Delegate at [message]
     }
 
-    static void AddSubscriber(string e, Callback c)         // [Function] // 
+    public static void AddSubscriber(string e, Callback c)         // [Function] // Add Subscriber to the Dictionary
     {
-        if(_subscribers[e] == null) // If the Key does not exist, make one
-        {
+        if(_subscribers[e] == null) // If the Key doesn't exist; add the key and value pair to the dictionary
             _subscribers.Add(e, c);
-        }
 
-        else                        // If Key already exists, just add the Delegate to the Keys Value
-        {
+        else                        // If Key exists: add the Delegate to the Keys Value
             _subscribers[e] = (Callback)_subscribers[e] + c;
-        }
     }
 
-    static void RemoveSubscriber(string e, Callback c)      // [Function] // 
+    public static void RemoveSubscriber(string e, Callback c)      // [Function] // Remove Delegate at the Key [e]
     {
-        _subscribers[e] = (Callback)_subscribers[e] - c;
+        if (_subscribers[e] == null)                        // If Nothing at that Key; do nothing
+            return;
+
+        _subscribers[e] = (Callback)_subscribers[e] - c;    // Remove delegate from 
+
+        if((Callback)_subscribers[e] == null)               // If there is no value for the Key aftr the remove; Delete the whole thing
+        {
+            _subscribers.Remove(e);
+        }
     }
 
 }
