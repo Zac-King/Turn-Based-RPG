@@ -1,6 +1,6 @@
 ﻿public enum MessageType
 {
-        Combat,
+        COMBAT,
         GUI,
-        Party
+        PARTY
 }

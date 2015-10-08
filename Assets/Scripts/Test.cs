@@ -10,18 +10,17 @@ public class Test : MonoBehaviour
 
     void Start()
     { 
-        Callback c = test1Func;
-        ObserverSystem.AddSubscriber(testType, testMessage, test1Func);
+        ObserverSystem.AddSubscriber<string>(testType, testMessage, test1Func);
     }
 
-    void test1Func()
+    void test1Func(string s)
     {
-        Debug.Log("Test1Func Called");
+        Debug.Log("Test1Func Called\n" + s);
     }
 
     [ContextMenu("Die")]
     void Die()
     {
-        ObserverSystem.RemoveSubscriber(testType, testMessage, test1Func);
+        ObserverSystem.RemoveSubscriber<string>(testType, testMessage, test1Func);
     }
 }

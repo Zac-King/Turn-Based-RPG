@@ -8,6 +8,6 @@ public class Test2 : MonoBehaviour
     [ContextMenu ("Do The Thing")]
     void DoTheThing()
     {
-        ObserverSystem.Notify(MessageType.Party, "Hit");
+        ObserverSystem.Notify<string>(MessageType.PARTY, "Hit", "Party Hard");
     }
 }

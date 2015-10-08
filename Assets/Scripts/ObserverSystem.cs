@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -7,7 +7,7 @@ public static class ObserverSystem
 {
     private static Dictionary<string, Delegate> _subscribers = new Dictionary<string, Delegate>();
     
-    public static void Notify(MessageType t, string m)                                  // [Function] // Notify all subscribers of the message
+    public static void Notify(MessageType t, string m)                                          // [Function] // Notify all subscribers of the message
     {
         string message = FormatMessage(t, m);       // Make formated Message
         Delegate d;                                 // Make a Delegate, to store <Delegate> value
@@ -21,8 +21,7 @@ public static class ObserverSystem
             }
         }
     }
-
-    public static void Notify<T>(MessageType t, string m, T arg)                        // [Function] // Notify all subscribers of the message
+    public static void Notify<T>(MessageType t, string m, T arg)                                // [Function] // Notify all subscribers with Templated 1 Argument of the message
     {
         string message = FormatMessage(t, m);           // Make formated Message
         Delegate d;                                     // Make a Delegate, to store <Delegate> value
@@ -36,64 +35,161 @@ public static class ObserverSystem
             }
         }
     }
+    public static void Notify<T, U>(MessageType t, string m, T arg1, U arg2)                    // [Function] // Notify all subscribers with Templated 2 Arguments of the message
+    {
+        string message = FormatMessage(t, m);           // Make formated Message
+        Delegate d;                                     // Make a Delegate, to store <Delegate> value
 
-    public static void AddSubscriber(MessageType t, string m, Callback c)               // [Function] // Add Subscriber to the Dictionary
+        if (_subscribers.TryGetValue(message, out d))   // If Key Exist output the value to d
+        {
+            Callback<T, U> c = d as Callback<T, U>;   // Cast d as Callback<T, U>
+            if (c != null)
+            {
+                c(arg1, arg2);    // Use the Delegate
+            }
+        }
+    }
+    public static void Notify<T, U, V>(MessageType t, string m, T arg1, U arg2, V arg3)         // [Function] // Notify all subscribers with Templated 3 Arguments of the message
+    {
+        string message = FormatMessage(t, m);           // Make formated Message
+        Delegate d;                                     // Make a Delegate, to store <Delegate> value
+
+        if (_subscribers.TryGetValue(message, out d))   // If Key Exist output the value to d
+        {
+            Callback<T, U, V> c = d as Callback<T, U, V>;   // Cast d as Callback<T, U, V>
+            if (c != null)
+            {
+                c(arg1, arg2, arg3);    // Use the Delegate
+            }
+        }
+    }
+
+    public static void AddSubscriber(MessageType t, string m, Callback c)                       // [Function] // Add Subscriber to the Dictionary
     {
         string message = FormatMessage(t,m);
+
         if(!_subscribers.ContainsKey(message)) // If the Key doesn't exist; add the key and value pair to the dictionary
             _subscribers.Add(message, c);
 
         else                        // If Key exists: add the Delegate to the Keys Value
             _subscribers[message] = (Callback)_subscribers[message] + c;
     }
-
-    public static void AddSubscriber<T>(MessageType t, string m, Callback c, T arg)     // [Function] // Add Subscriber to the Dictionary
+    public static void AddSubscriber<T>(MessageType t, string m, Callback<T> c)                 // [Function] // Add Subscriber with 1 Templated Delegate to the Dictionary
     {
         string message = FormatMessage(t, m);
+
         if (!_subscribers.ContainsKey(message)) // If the Key doesn't exist; add the key and value pair to the dictionary
             _subscribers.Add(message, c);
 
         else                        // If Key exists: add the Delegate to the Keys Value
-            _subscribers[message] = (Callback)_subscribers[message] + c;
+            _subscribers[message] = (Callback<T>)_subscribers[message] + c;
+    }
+    public static void AddSubscriber<T, U>(MessageType t, string m, Callback<T, U> c)           // [Function] // Add Subscriber with 2 Templated Delegates to the Dictionary
+    {
+        string message = FormatMessage(t, m);
+
+        if (!_subscribers.ContainsKey(message)) // If the Key doesn't exist; add the key and value pair to the dictionary
+            _subscribers.Add(message, c);
+
+        else                        // If Key exists: add the Delegate to the Keys Value
+            _subscribers[message] = (Callback<T, U>)_subscribers[message] + c;
+    }
+    public static void AddSubscriber<T, U, V>(MessageType t, string m, Callback<T, U, V> c)     // [Function] // Add Subscriber with 3 Templated Delegates to the Dictionary
+    {
+        string message = FormatMessage(t, m);
+
+        if (!_subscribers.ContainsKey(message)) // If the Key doesn't exist; add the key and value pair to the dictionary
+            _subscribers.Add(message, c);
+
+        else                        // If Key exists: add the Delegate to the Keys Value
+            _subscribers[message] = (Callback<T, U, V>)_subscribers[message] + c;
     }
 
-    public static void RemoveSubscriber(MessageType t, string m, Callback c)            // [Function] // Remove Delegate from Dictionary
+    public static void RemoveSubscriber(MessageType t, string m, Callback c)                    // [Function] // Remove Delegate from Dictionary
     {
         string message = FormatMessage(t,m);
-        if (!_subscribers.ContainsKey(message))                     // If Nothing at that Key; do nothing
+
+        if (!_subscribers.ContainsKey(message))     // If Nothing at that Key; do nothing
+        {
             return;
+        }
 
         if (_subscribers[message] != null)
-            _subscribers[message] = _subscribers[message] - c;      // Remove delegate from 
+        {
+            _subscribers[message] = (Callback)_subscribers[message] - c;        // Remove delegate from Key
+        }
 
-        if(_subscribers[message] == null)                           // If there is no value for the Key aftr the remove; Delete the whole thing
+        if(_subscribers[message] == null)       // If there is no value for the Key aftr the remove; Delete the whole thing
+        {
+            _subscribers.Remove(message);
+        }
+    }
+    public static void RemoveSubscriber<T>(MessageType t, string m, Callback<T> c)              // [Function] // Remove Delegate from Dictionary
+    {
+        string message = FormatMessage(t, m);
+
+        if (!_subscribers.ContainsKey(message))     // If Nothing at that Key; do nothing
+        {
+            return;
+        }
+
+        if (_subscribers[message] != null)
+        {
+            _subscribers[message] = (Callback<T>)_subscribers[message] - c;        // Remove delegate from Key
+        }
+
+        if (_subscribers[message] == null)       // If there is no value for the Key aftr the remove; Delete the whole thing
+        {
+            _subscribers.Remove(message);
+        }
+    }
+    public static void RemoveSubscriber<T, U>(MessageType t, string m, Callback<T, U> c)        // [Function] // Remove Delegate from Dictionary
+    {
+        string message = FormatMessage(t, m);
+
+        if (!_subscribers.ContainsKey(message))     // If Nothing at that Key; do nothing
+        {
+            return;
+        }
+
+        if (_subscribers[message] != null)
+        {
+            _subscribers[message] = (Callback<T, U>)_subscribers[message] - c;        // Remove delegate from Key
+        }
+
+        if (_subscribers[message] == null)       // If there is no value for the Key aftr the remove; Delete the whole thing
+        {
+            _subscribers.Remove(message);
+        }
+    }
+    public static void RemoveSubscriber<T, U, V>(MessageType t, string m, Callback<T, U, V> c)  // [Function] // Remove Delegate from Dictionary
+    {
+        string message = FormatMessage(t, m);
+
+        if (!_subscribers.ContainsKey(message))     // If Nothing at that Key; do nothing
+        {
+            return;
+        }
+
+        if (_subscribers[message] != null)
+        {
+            _subscribers[message] = (Callback<T, U, V>)_subscribers[message] - c;        // Remove delegate from Key
+        }
+
+        if (_subscribers[message] == null)       // If there is no value for the Key aftr the remove; Delete the whole thing
         {
             _subscribers.Remove(message);
         }
     }
 
-    private static string FormatMessage(MessageType type, string message)               // [Function] // Ensures Messages are proper Format
+    private static string FormatMessage(MessageType type, string message)                       // [Function] // Ensures Messages are proper Format
     {
         return  type.ToString() + ":" + message;
     }
     
 }
 
-//public class Subscriber
-//{
-//    public MessageType type;
-//    public string message;
-//    Object callback;
+// // Implementation :
+/*
 
-//    Subscriber()
-//    {
-
-//    }
-
-//    Subscriber(MessageType t, string s, Callback c)
-//    {
-//        type = t;
-//        message = s;
-//        callback = c as Object;
-//    }
-//}
+*/
