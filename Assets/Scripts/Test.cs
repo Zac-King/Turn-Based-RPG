@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 
 public class Test : MonoBehaviour
 {
@@ -10,7 +10,7 @@ public class Test : MonoBehaviour
 
     void Start()
     { 
-        ObserverSystem.AddSubscriber<string>(testType, testMessage, test1Func);
+        EventSystem.AddSubscriber<string>(testType, testMessage, test1Func);
     }
 
     void test1Func(string s)
@@ -21,6 +21,6 @@ public class Test : MonoBehaviour
     [ContextMenu("Die")]
     void Die()
     {
-        ObserverSystem.RemoveSubscriber<string>(testType, testMessage, test1Func);
+        EventSystem.RemoveSubscriber<string>(testType, testMessage, test1Func);
     }
 }

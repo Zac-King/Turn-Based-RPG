@@ -3,9 +3,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public static class ObserverSystem
+public static class EventSystem
 {
-    private static Dictionary<string, Delegate> _subscribers = new Dictionary<string, Delegate>();
+    private static Dictionary<string, Delegate> _subscribers;
     
     public static void Notify(MessageType t, string m)                                          // [Function] // Notify all subscribers of the message
     {
@@ -119,9 +119,9 @@ public static class ObserverSystem
             _subscribers[message] = (Callback)_subscribers[message] - c;        // Remove delegate from Key
         }
 
-        if(_subscribers[message] == null)       // If there is no value for the Key aftr the remove; Delete the whole thing
+        if(_subscribers[message] == null)       // If there is no value for the Key after the remove
         {
-            _subscribers.Remove(message);
+            _subscribers.Remove(message);       // Delete the whole thing
         }
     }
     public static void RemoveSubscriber<T>(MessageType t, string m, Callback<T> c)              // [Function] // Remove Delegate from Dictionary
@@ -138,9 +138,9 @@ public static class ObserverSystem
             _subscribers[message] = (Callback<T>)_subscribers[message] - c;        // Remove delegate from Key
         }
 
-        if (_subscribers[message] == null)       // If there is no value for the Key aftr the remove; Delete the whole thing
+        if (_subscribers[message] == null)      // If there is no value for the Key after the remove
         {
-            _subscribers.Remove(message);
+            _subscribers.Remove(message);       // Delete the whole thing
         }
     }
     public static void RemoveSubscriber<T, U>(MessageType t, string m, Callback<T, U> c)        // [Function] // Remove Delegate from Dictionary
@@ -157,9 +157,9 @@ public static class ObserverSystem
             _subscribers[message] = (Callback<T, U>)_subscribers[message] - c;        // Remove delegate from Key
         }
 
-        if (_subscribers[message] == null)       // If there is no value for the Key aftr the remove; Delete the whole thing
+        if (_subscribers[message] == null)       // If there is no value for the Key after the remove
         {
-            _subscribers.Remove(message);
+            _subscribers.Remove(message);        // Delete the whole thing
         }
     }
     public static void RemoveSubscriber<T, U, V>(MessageType t, string m, Callback<T, U, V> c)  // [Function] // Remove Delegate from Dictionary
@@ -176,9 +176,9 @@ public static class ObserverSystem
             _subscribers[message] = (Callback<T, U, V>)_subscribers[message] - c;        // Remove delegate from Key
         }
 
-        if (_subscribers[message] == null)       // If there is no value for the Key aftr the remove; Delete the whole thing
+        if (_subscribers[message] == null)      // If there is no value for the Key after the remove
         {
-            _subscribers.Remove(message);
+            _subscribers.Remove(message);       // Delete the whole thing
         }
     }
 
