@@ -8,7 +8,7 @@ public class FiniteStateMachine<T> // <T> Generic
     private List<T> StateList;                      //[Variable]// List of <T>s of the States 
     private List<string> TransitionList;            //[Variable]// List of <string>s of Valid Transistions 
     private T CurrentState;                         //[Variable]// Current State of Machine
- 
+
 
     public FiniteStateMachine()                         //[Function]// Default Constructor 
     {
